@@ -1,0 +1,9 @@
+{
+  "tabBar.home": "首页",
+  "tabBar.category": "分类",
+  "tabBar.cart": "购物车",
+  "tabBar.mine": "我的",
+  "settings.address": "我的收货地址",
+  "settings.AuthorizationManagement": "授权管理 {n}",
+  "settings.navigationBarTitleText": "设置"
+}

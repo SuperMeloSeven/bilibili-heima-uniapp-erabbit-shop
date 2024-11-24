@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import type { XtxGuessInstance } from '@/types/component'
-import { ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref, nextTick } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '../../services/home'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import PageSkeleton from './components/PageSkeleton.vue'
+
+// #ifdef MP-WEIXIN
+import { setTabBarAndTitle } from '@/locale'
+// #endif
 
 const bannerList = ref<BannerItem[]>([])
 const getBannerList = async () => {
@@ -51,6 +55,14 @@ const onRefresh = async () => {
   await XtxGuessRef.value?.getMore()
   isRefreshFlag.value = false
 }
+
+onShow(() => {
+  // #ifdef MP-WEIXIN
+  nextTick(() => {
+    setTabBarAndTitle()
+  })
+  // #endif
+})
 </script>
 
 <template>

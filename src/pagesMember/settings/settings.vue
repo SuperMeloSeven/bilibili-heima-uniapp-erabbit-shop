@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
 import { useMemberStore } from '@/stores'
+import { ref } from 'vue'
+import { setLocale } from '@/locale'
+import type { LocaleType } from '@/locale'
+
+// #ifdef MP-WEIXIN
+import { setTabBarAndTitle } from '@/locale'
+// #endif
 
 const memberStore = useMemberStore()
 const onLogout = () => {
@@ -18,6 +26,31 @@ const onLogout = () => {
     },
   })
 }
+
+const currLanguage = ref<LocaleType>(uni.getLocale() as LocaleType)
+const languageList = ref([
+  {
+    text: '中',
+    value: 'zh-Hans',
+  },
+  {
+    text: '英',
+    value: 'en',
+  },
+])
+const handleChangeLanguage = () => {
+  setLocale(currLanguage.value)
+  // #ifdef MP-WEIXIN
+  setTabBarAndTitle('settings.navigationBarTitleText')
+  // #endif
+}
+const textValue = ref(Math.round(Math.random() * 100))
+
+onLoad(() => {
+  // #ifdef MP-WEIXIN
+  setTabBarAndTitle('settings.navigationBarTitleText')
+  // #endif
+})
 </script>
 
 <template>
@@ -25,14 +58,26 @@ const onLogout = () => {
     <!-- 列表1 -->
     <view class="list" v-if="memberStore.profile">
       <navigator url="/pagesMember/address/address" hover-class="none" class="item arrow">
-        我的收货地址
+        {{ $t('settings.address') }}
       </navigator>
     </view>
     <!-- 列表2 -->
     <view class="list">
-      <button hover-class="none" class="item arrow" open-type="openSetting">授权管理</button>
+      <button hover-class="none" class="item arrow" open-type="openSetting">
+        {{ $t('settings.AuthorizationManagement', { n: textValue }) }}
+      </button>
       <button hover-class="none" class="item arrow" open-type="feedback">问题反馈</button>
       <button hover-class="none" class="item arrow" open-type="contact">联系我们</button>
+      <view style="display: flex; align-items: center">
+        <view class="uni-px-5 uni-pb-5">
+          <view class="text">语言</view>
+          <uni-data-checkbox
+            v-model="currLanguage"
+            :localdata="languageList"
+            @change="handleChangeLanguage"
+          ></uni-data-checkbox>
+        </view>
+      </view>
     </view>
     <!-- 列表3 -->
     <view class="list">

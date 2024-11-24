@@ -1,0 +1,9 @@
+{
+  "tabBar.home": "Home",
+  "tabBar.category": "Category",
+  "tabBar.cart": "Cart",
+  "tabBar.mine": "Mine",
+  "settings.address": "My shipping address",
+  "settings.AuthorizationManagement": "Authorization Management {n}",
+  "settings.navigationBarTitleText": "Setting"
+}

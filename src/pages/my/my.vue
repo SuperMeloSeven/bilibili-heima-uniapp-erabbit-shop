@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import { useMemberStore } from '@/stores'
 import { useGuessList } from '@/composables/index'
+import { onShow } from '@dcloudio/uni-app'
+// #ifdef MP-WEIXIN
+import { setTabBarAndTitle } from '@/locale'
+// #endif
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -15,6 +20,14 @@ const orderTypes = [
 const memberStore = useMemberStore()
 
 const { guessRef, onScrolltolower } = useGuessList()
+
+onShow(() => {
+  // #ifdef MP-WEIXIN
+  nextTick(() => {
+    setTabBarAndTitle('tabBar.mine')
+  })
+  // #endif
+})
 </script>
 
 <template>
